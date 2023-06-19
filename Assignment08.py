@@ -11,6 +11,9 @@
 # Data -------------------------------------------------------------------- #
 strFileName = 'products.txt'
 lstOfProductObjects = []
+file_obj = None  # An object that represents a file
+row_dic = {}  # A row of data separated into elements of a dictionary {Product,Price}
+choice_str = ""  # Captures the user option selection
 
 class Product:
     """Stores data about a product:
@@ -46,8 +49,38 @@ class FileProcessor:
         <Your Name>,<Today's Date>,Modified code to complete assignment 8
     """
     pass
-    # TODO: Add Code to process data from a file
+     @staticmethod
+    def read_data_from_file(file_name, list_of_rows):
+        """ Reads data from a file into a list of dictionary rows
+
+        :param file_name: (string) with name of file:
+        :param list_of_rows: (list) you want filled with file data:
+        :return: (list) of dictionary rows
+        """
+        list_of_rows.clear()  # clear current data
+        global file_obj  # using global file variable across all functions
+        file_obj = open(file_name, "r")
+        for line in file_obj:
+            task, priority = line.split(",")
+            row = {"Product": task.strip(), "Price": priority.strip()}
+            list_of_rows.append(row)
+        file_obj.close()
+        return list_of_rows
     # TODO: Add Code to process data to a file
+    @staticmethod
+    def write_data_to_file(file_name, list_of_rows):
+        """ Writes data from a list of dictionary rows to a File
+
+        :param file_name: (string) with name of file:
+        :param list_of_rows: (list) you want filled with file data:
+        :return: (list) of dictionary rows
+        """
+        global file_obj  # using global here to be consistent across functions
+        file_obj = open(file_name, 'w')  # opening file
+        for i in list_of_rows:
+            file_obj.write(i["Product"] + ',' + i["Price"] + '\n')  # writing list to file
+        file_obj.close()
+        return list_of_rows
 
 # Processing  ------------------------------------------------------------- #
 
@@ -82,11 +115,39 @@ class IO:
         print()  # Add an extra line for looks in the terminal window
 
     # TODO: Add code to get user's choice
+    @staticmethod
+    def input_menu_choice():
+        """ Gets the menu choice from a user
+        :return: string
+        """
+        choice = str(input("Which option would you like to perform? [1 to 4] - ")).strip()
+        print()  # Add an extra line for looks
+        return choice
 
     # TODO: Add code to show the current data from the file to user
+    @staticmethod
+    def output_current_tasks_in_list(list_of_rows):
+        """ Shows the current Tasks in the list of dictionaries rows
 
+        :param list_of_rows: (list) of rows you want to display
+        :return: nothing
+        """
+        print()
+        print("******* The current products are: *******")
+        for row in list_of_rows:
+            print(row["Product"] + " (" + row["Price"] + ")")
+        print("*******************************************")
+        print()  # Add an extra line for looks
     # TODO: Add code to get product data from user
+    @staticmethod
+    def input_new_task_and_priority():
+        """  Gets task and priority values to be added to the list
 
+        :return: (string, string) with task and priority
+        """
+        task_new = input('Please enter the product you wish to add: ')  # getting task from user
+        priority_new = input(f'Enter the price of {task_new}: ')  # getting priority
+        return task_new, priority_new
 # Presentation (Input/Output)  -------------------------------------------- #
 
 
