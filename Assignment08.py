@@ -154,10 +154,35 @@ class IO:
 # Main Body of Script  ---------------------------------------------------- #
 # TODO: Add Data Code to the Main body
 # Load data from file into a list of product objects when script starts
+FileProcessor.read_data_from_file(file_name=file_name_str, list_of_rows=table_lst)
 # Show user a menu of options
 # Get user's menu option choice
     # Show user current data in the list of product objects
     # Let user add data to the list of product objects
     # let user save current data to file and exit program
+while (True):
+    # Step 3 Show current data
+    IO.output_current_tasks_in_list(list_of_rows=table_lst)  # Show current data in the list/table
+    IO.output_menu_tasks()  # Shows menu
+    choice_str = IO.input_menu_choice()  # Get menu option
 
+    # Step 4 - Process user's menu choice
+    if choice_str.strip() == '1':  # Add a new Task
+        task, priority = IO.input_new_task_and_priority()
+        table_lst = Processor.add_data_to_list(task=task, priority=priority, list_of_rows=table_lst)
+        continue  # to show the menu
+
+    elif choice_str == '2':  # Remove an existing Task
+        task = IO.input_task_to_remove()
+        table_lst = Processor.remove_data_from_list(task=task, list_of_rows=table_lst)
+        continue  # to show the menu
+
+    elif choice_str == '3':  # Save Data to File
+        table_lst = Processor .write_data_to_file(file_name=file_name_str, list_of_rows=table_lst)
+        print("Data Saved!")
+        continue  # to show the menu
+
+    elif choice_str == '4':  # Exit Program
+        print("Goodbye!")
+        break  # by exiting loop
 # Main Body of Script  ---------------------------------------------------- #
